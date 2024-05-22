@@ -49,3 +49,5 @@ profile.*
 *.nsys-rep
 *.ncu-rep
 dummy.jpg
+secrets.py
+secret.py
