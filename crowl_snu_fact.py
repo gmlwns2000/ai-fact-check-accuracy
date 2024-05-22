@@ -15,4 +15,4 @@ for i in tqdm.tqdm(range(0, total_length, chunk), dynamic_ncols=True):
     data += res.json()
 
 with open('./data/snu_fact.json', 'w') as f:
-    json.dump(data, f)
+    json.dump(data, f, indent=2)
