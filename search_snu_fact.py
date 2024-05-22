@@ -37,12 +37,20 @@ for i in range(len(df)):
     url = f'https://www.googleapis.com/customsearch/v1?key={GOOGLE_SEARCH_KEY}&cx={GOOGLE_SEARCH_CX}&gl=kr&hl=kr&lr=lang_ko&num=10&q={urllib.parse.quote_plus(keyword)}'
     print(f'"""{keyword}"""', url)
     
-    res = requests.get(url)
-    res_json = res.json()
+    retry = 5
+    while retry > 0:
+        res = requests.get(url)
+        res_json = res.json()
+        
+        print(res.status_code)
+        if res.status_code == 200:
+            time.sleep(0.5)
+            break
+        else:
+            time.sleep(1.0)
+        retry -= 1
     
-    print(res.status_code)
-    
-    assert res.status_code == 200, res.text
+    assert retry > 0, res.text
     
     if 'items' in res_json:
         print(len(res_json['items']), 'results')
@@ -52,6 +60,5 @@ for i in range(len(df)):
     with open(path, 'w', encoding='UTF-8') as f:
         json.dump(res_json, f, indent=2, ensure_ascii=False)
     
-    time.sleep(1.0)
 
 print('done')
